@@ -58,6 +58,21 @@ class App extends Component {
 
   handlePromptCheckbox = (e) => {
     const newData = { ...this.state }
+
+    // Trying to reset all checkboxes to false first
+
+    // console.log(Object.keys(newData.prompts))
+    // console.log(newData.prompts)
+
+    // let prompts = Object.keys(newData.prompts)
+    // prompts.map((prompt) => {
+    //   const newPrompt = prompt
+    //   console.log(newPrompt.isLie)
+    //   console.log("test", newData.prompt)
+    //   return newPrompt
+    // })
+   
+
     newData.prompts[e.target.name].isLie = e.target.checked
     this.setState(newData)
   }
