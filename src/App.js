@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './App.css';
 
-const serverURL = "http://cab2-108-53-232-66.ngrok.io";
+const serverURL = "http://ce44-108-53-232-66.ngrok.io";
 
 async function postToServer(data, route) {
   const response = await fetch(`${serverURL}/${route}`, {
@@ -87,10 +87,6 @@ class App extends Component {
     this.setState(newData)
   }
 
-  handleFormSubmit = (e) => {
-    e.preventDefault()
-  }
-
   sendPrompt = async (e) => {
     const data = JSON.stringify({
       userName: this.state.username,
@@ -114,75 +110,74 @@ class App extends Component {
       <div className='App'>
         <h1>Two Truths and a Lie</h1>
 
-        <form onSubmit={this.handleFormSubmit}>
-          <label>Username: </label>
-          <input
-            name="username"
-            value={this.state.username}
-            onChange={this.handleUsernameChange}
-          />
-          <br />
+        <label>Username: </label>
+        <input
+          name="username"
+          value={this.state.username}
+          onChange={this.handleUsernameChange}
+        />
+        <br />
 
-          <label>Prompt 1: </label>
-          <input
-            name="promptOne"
-            value={this.state.prompts.promptOne.prompt}
-            onChange={this.handlePromptChange}
-          />
-          <input
-            type="checkbox"
-            name="promptOne"
-            checked={this.state.prompts.promptOne.isLie}
-            onChange={this.handlePromptCheckbox}
-          />
-          <br />
+        <label>Prompt 1: </label>
+        <input
+          name="promptOne"
+          value={this.state.prompts.promptOne.prompt}
+          onChange={this.handlePromptChange}
+        />
+        <input
+          type="checkbox"
+          name="promptOne"
+          checked={this.state.prompts.promptOne.isLie}
+          onChange={this.handlePromptCheckbox}
+        />
+        <br />
 
-          <label>Prompt 2: </label>
-          <input
-            name="promptTwo"
-            value={this.state.prompts.promptTwo.prompt}
-            onChange={this.handlePromptChange}
-          />
-          <input
-            type="checkbox"
-            name="promptTwo"
-            checked={this.state.prompts.promptTwo.isLie}
-            onChange={this.handlePromptCheckbox}
-          />
-          <br />
+        <label>Prompt 2: </label>
+        <input
+          name="promptTwo"
+          value={this.state.prompts.promptTwo.prompt}
+          onChange={this.handlePromptChange}
+        />
+        <input
+          type="checkbox"
+          name="promptTwo"
+          checked={this.state.prompts.promptTwo.isLie}
+          onChange={this.handlePromptCheckbox}
+        />
+        <br />
 
-          <label>Prompt 3: </label>
-          <input
-            name="promptThree"
-            value={this.state.prompts.promptThree.prompt}
-            onChange={this.handlePromptChange}
-          />
-          <input
-            type="checkbox"
-            name="promptThree"
-            checked={this.state.prompts.promptThree.isLie}
-            onChange={this.handlePromptCheckbox}
-          />
-          <br />
+        <label>Prompt 3: </label>
+        <input
+          name="promptThree"
+          value={this.state.prompts.promptThree.prompt}
+          onChange={this.handlePromptChange}
+        />
+        <input
+          type="checkbox"
+          name="promptThree"
+          checked={this.state.prompts.promptThree.isLie}
+          onChange={this.handlePromptCheckbox}
+        />
+        <br />
 
-          <label>Vote </label>
-          <input
-            name="vote"
-            type="number"
-            value={this.state.vote}
-            onChange={this.handleVoteChange}
-          />
-          <br />
+        <label>Vote </label>
+        <input
+          name="vote"
+          type="number"
+          value={this.state.vote}
+          onChange={this.handleVoteChange}
+        />
+        <br />
 
-          <button
-            name="sendprompt"
-            onClick={this.sendPrompt}
-          >Send Prompt</button>
-          <button
-            name="sendvote"
-            onClick={this.sendVote}
-          > Send Vote</button>
-        </form>
+        <button
+          name="sendprompt"
+          onClick={this.sendPrompt}
+        >Send Prompt</button>
+        <button
+          name="sendvote"
+          onClick={this.sendVote}
+        > Send Vote</button>
+
 
       </div>
     )
