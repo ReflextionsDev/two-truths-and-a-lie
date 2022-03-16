@@ -1,6 +1,24 @@
 import React, { Component } from 'react'
 import './App.css';
 
+const serverURL = "http://cab2-108-53-232-66.ngrok.io";
+
+async function postToServer(data, route) {
+  const response = await fetch(`${serverURL}/${route}`, {
+    method: "POST",
+    mode: "cors",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      "access-control-request-headers": "content-type",
+      "x-Trigger": "CORS",
+    },
+    body: data
+  });
+  const pingResponse = await response.text();
+  return pingResponse;
+}
+
 class App extends Component {
 
   constructor(props) {
@@ -9,16 +27,16 @@ class App extends Component {
       username: "",
       vote: 1,
       prompts: {
-        prompt1: {
-          text: "",
+        promptOne: {
+          prompt: "",
           isLie: false
         },
-        prompt2: {
-          text: "",
+        promptTwo: {
+          prompt: "",
           isLie: false
         },
-        prompt3: {
-          text: "",
+        promptThree: {
+          prompt: "",
           isLie: false
         }
       }
@@ -47,31 +65,23 @@ class App extends Component {
       // prompts: {
       //   ...this.state.prompts,
       //   [e.target.name]: {
-      //     text: e.target.value,
+      //     prompt: e.target.value,
       //     isLie: false
       //   }
       // }
     }
-    newData.prompts[e.target.name].text = e.target.value
+    newData.prompts[e.target.name].prompt = e.target.value
     this.setState(newData)
   }
 
   handlePromptCheckbox = (e) => {
     const newData = { ...this.state }
 
-    // Trying to reset all checkboxes to false first
-
-    // console.log(Object.keys(newData.prompts))
-    // console.log(newData.prompts)
-
-    // let prompts = Object.keys(newData.prompts)
-    // prompts.map((prompt) => {
-    //   const newPrompt = prompt
-    //   console.log(newPrompt.isLie)
-    //   console.log("test", newData.prompt)
-    //   return newPrompt
-    // })
-   
+    // Resets all checkboxes
+    let prompts = Object.keys(newData.prompts)
+    prompts.forEach(prompt => {
+      newData.prompts[prompt].isLie = false
+    })
 
     newData.prompts[e.target.name].isLie = e.target.checked
     this.setState(newData)
@@ -79,6 +89,24 @@ class App extends Component {
 
   handleFormSubmit = (e) => {
     e.preventDefault()
+  }
+
+  sendPrompt = async (e) => {
+    const data = JSON.stringify({
+      userName: this.state.username,
+      prompts: this.state.prompts,
+    })
+    const response = await postToServer(data, 'prompt-submit')
+    console.log(response)
+  }
+
+  sendVote = async (e) => {
+    const data = JSON.stringify({
+      userName: this.state.username,
+      promptVote: this.state.vote,
+    })
+    const response = await postToServer(data, 'prompt-vote')
+    console.log(response)
   }
 
   render() {
@@ -97,42 +125,42 @@ class App extends Component {
 
           <label>Prompt 1: </label>
           <input
-            name="prompt1"
-            value={this.state.prompts.prompt1.text}
+            name="promptOne"
+            value={this.state.prompts.promptOne.prompt}
             onChange={this.handlePromptChange}
           />
           <input
             type="checkbox"
-            name="prompt1"
-            value={this.state.prompts.prompt1.isLie}
+            name="promptOne"
+            checked={this.state.prompts.promptOne.isLie}
             onChange={this.handlePromptCheckbox}
           />
           <br />
 
           <label>Prompt 2: </label>
           <input
-            name="prompt2"
-            value={this.state.prompts.prompt2.text}
+            name="promptTwo"
+            value={this.state.prompts.promptTwo.prompt}
             onChange={this.handlePromptChange}
           />
           <input
             type="checkbox"
-            name="prompt2"
-            value={this.state.prompts.prompt1.isLie}
+            name="promptTwo"
+            checked={this.state.prompts.promptTwo.isLie}
             onChange={this.handlePromptCheckbox}
           />
           <br />
 
           <label>Prompt 3: </label>
           <input
-            name="prompt3"
-            value={this.state.prompts.prompt3.text}
+            name="promptThree"
+            value={this.state.prompts.promptThree.prompt}
             onChange={this.handlePromptChange}
           />
           <input
             type="checkbox"
-            name="prompt3"
-            value={this.state.prompts.prompt1.isLie}
+            name="promptThree"
+            checked={this.state.prompts.promptThree.isLie}
             onChange={this.handlePromptCheckbox}
           />
           <br />
@@ -146,8 +174,14 @@ class App extends Component {
           />
           <br />
 
-          <button>Send Prompt</button>
-          <button>Send Vote</button>
+          <button
+            name="sendprompt"
+            onClick={this.sendPrompt}
+          >Send Prompt</button>
+          <button
+            name="sendvote"
+            onClick={this.sendVote}
+          > Send Vote</button>
         </form>
 
       </div>
