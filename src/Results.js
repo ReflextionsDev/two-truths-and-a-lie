@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './App.css';
 
-const serverURL = "http://ce44-108-53-232-66.ngrok.io";
+const serverURL = "http://ad4d-108-53-232-66.ngrok.io";
 
 async function getFromServer() {
     const response = await fetch(`${serverURL}/prompt-poll`, {
