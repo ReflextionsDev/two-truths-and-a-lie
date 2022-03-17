@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
+import InputPrompt from './components/InputPrompt';
 import './App.css';
 
-const serverURL = "http://ce44-108-53-232-66.ngrok.io";
+const serverURL = "http://ad4d-108-53-232-66.ngrok.io";
 
 async function postToServer(data, route) {
   const response = await fetch(`${serverURL}/${route}`, {
@@ -26,20 +27,23 @@ class App extends Component {
     this.state = {
       username: "",
       vote: 1,
-      prompts: {
-        promptOne: {
-          prompt: "",
+      prompts: [
+        {
+          "name": "promptOne",
+          prompt: "First",
           isLie: false
         },
-        promptTwo: {
-          prompt: "",
-          isLie: false
+        {
+          "name": "promptTwo",
+          prompt: "Second",
+          isLie: true
         },
-        promptThree: {
-          prompt: "",
+        {
+          "name": "promptThree",
+          prompt: "Third",
           isLie: false
         }
-      }
+      ]
     }
   }
 
@@ -60,18 +64,29 @@ class App extends Component {
   }
 
   handlePromptChange = (e) => {
-    const newData = {
-      ...this.state,
-      // prompts: {
-      //   ...this.state.prompts,
-      //   [e.target.name]: {
-      //     prompt: e.target.value,
-      //     isLie: false
-      //   }
-      // }
-    }
-    newData.prompts[e.target.name].prompt = e.target.value
-    this.setState(newData)
+    // const newData = { ...this.state, }
+    // newData.prompts[e.target.name].prompt = e.target.value
+    // this.setState(newData)
+
+    // Try refactoring
+    const name = e.target.name
+    const value = e.target.value
+    let updatedPrompts = [...this.state.prompts]
+
+    updatedPrompts = updatedPrompts.map((prompt) => {
+      if (prompt.name === name) {
+        return {
+          ...prompt,
+          prompt: value
+        }
+      }
+      return {
+        ...prompt
+      }
+    })
+    this.setState({
+      prompts: updatedPrompts
+    })
   }
 
   handlePromptCheckbox = (e) => {
@@ -118,21 +133,33 @@ class App extends Component {
         />
         <br />
 
-        <label>Prompt 1: </label>
+        {this.state.prompts.map(({ name, prompt, isLie }, index) => {
+          return (
+            <InputPrompt
+              key={`Input-Prompt-${index}`}
+              nameProp={name}
+              promptProp={prompt}
+              isLieProp={isLie}
+              handlePromptText={this.handlePromptChange}
+            />
+          )
+        })}
+
+        {/* <label>Prompt 1: </label>
         <input
           name="promptOne"
-          value={this.state.prompts.promptOne.prompt}
+          value={this.state.prompts[0].prompt}
           onChange={this.handlePromptChange}
         />
         <input
           type="checkbox"
           name="promptOne"
-          checked={this.state.prompts.promptOne.isLie}
+          checked={this.state.prompts[0].isLie}
           onChange={this.handlePromptCheckbox}
         />
-        <br />
+        <br /> */}
 
-        <label>Prompt 2: </label>
+        {/* <label>Prompt 2: </label>
         <input
           name="promptTwo"
           value={this.state.prompts.promptTwo.prompt}
@@ -158,7 +185,7 @@ class App extends Component {
           checked={this.state.prompts.promptThree.isLie}
           onChange={this.handlePromptCheckbox}
         />
-        <br />
+        <br /> */}
 
         <label>Vote </label>
         <input
